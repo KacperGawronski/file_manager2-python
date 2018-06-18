@@ -370,7 +370,7 @@
             </child>
             <child>
               <object class="GtkButton" id="left_command_button">
-                <property name="label" translatable="yes">button</property>
+                <property name="label" translatable="yes">Run command</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -382,7 +382,7 @@
             </child>
             <child>
               <object class="GtkButton" id="right_command_button">
-                <property name="label" translatable="yes">button</property>
+                <property name="label" translatable="yes">Run command</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

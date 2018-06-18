@@ -2,7 +2,10 @@ from BaseGUIApp import BaseGUIApp
 from shutil import copy2,move,rmtree,copytree
 from os import scandir,remove
 from time import ctime
-
+from subprocess import PIPE,Popen
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 class SystemApp(BaseGUIApp):
 	def __init__(self):
@@ -12,6 +15,8 @@ class SystemApp(BaseGUIApp):
 		self.copy_button.connect("clicked",self.__copy)
 		self.move_button.connect("clicked",self.__move)
 		self.delete_button.connect("clicked",self.__delete)
+		self.left_command_button.connect("clicked",self.__run_left_command)
+		self.right_command_button.connect("clicked",self.__run_right_command)
 	def __get_list(self,store,tree_view,entry):
 		store=Gtk.ListStore(*self.store_type_def)
 		tree_view.set_model(store)
@@ -74,3 +79,11 @@ class SystemApp(BaseGUIApp):
 	def __get_selection(self,tree_view):
 		model,selection=tree_view.get_selection().get_selected_rows()
 		return (model[row][1] for row in selection)
+
+	def __run_left_command(self,_):
+		with Popen(['/bin/bash', "-c","(cd "+self.left_path_entry.get_text()+"; "+self.left_command_entry.get_text()+")"],stdout=PIPE) as p:
+			self.left_command_view.get_buffer().insert(self.left_command_view.get_buffer().get_end_iter(),p.stdout.read().decode('utf-8'))
+	def __run_right_command(self,_):
+		with Popen(['/bin/bash', "-c","(cd "+self.right_path_entry.get_text()+"; "+self.right_command_entry.get_text()+")"],stdout=PIPE) as p:
+			self.right_command_view.get_buffer().insert(self.right_command_view.get_buffer().get_end_iter(),p.stdout.read().decode('utf-8'))
+	
